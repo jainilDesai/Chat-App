@@ -6,6 +6,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -19,7 +20,14 @@ import { toast } from "react-toastify";
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
-  const { userData, chatData } = useContext(AppContext);
+  const {
+    userData,
+    chatData,
+    chatUser,
+    setChatUser,
+    messagesId,
+    setMessagesId,
+  } = useContext(AppContext);
   const [user, setUser] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -87,6 +95,25 @@ const LeftSidebar = () => {
       toast.error(error.message);
     }
   };
+
+  const setChat = async (item) => {
+    try {
+      setMessagesId(item.messageId);
+      setChatUser(item);
+      const userChatsRef = doc(db, "chats", userData.id);
+      const userChatsSnapshot = await getDoc(userChatsRef);
+      const userChatsData = userChatsSnapshot.data();
+      const chatIndex = userChatsData.chatsData.findIndex(
+        (c) => c.messageId === item.messageId
+      );
+      userChatsData.chatsData[chatIndex].messageSeen = true;
+      await updateDoc(userChatsRef, {
+        chatsData: userChatsData.chatsData,
+      });
+    } catch (error) {
+      toast.error(error);
+    }
+  };
   return (
     <div className="ls">
       <div className="ls-top">
@@ -118,7 +145,15 @@ const LeftSidebar = () => {
           </div>
         ) : (
           chatData.map((item, index) => (
-            <div key={index} className="friends">
+            <div
+              onClick={() => setChat(item)}
+              key={index}
+              className={`friends ${
+                item.messageSeen || item.messageId === messagesId
+                  ? ""
+                  : "border"
+              }`}
+            >
               <img src={item.userData.avatar} alt="" />
               <div>
                 <p>{item.userData.name}</p>
