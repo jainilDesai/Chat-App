@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+//import "dotenv/config";
+
 import {
   createUserWithEmailAndPassword,
   getAuth,
