@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-//import "dotenv/config";
+import "dotenv/config";
 
 import {
   createUserWithEmailAndPassword,
@@ -20,12 +20,12 @@ import {
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBCynbqKrNh7VlM1EsPpH0mWYQmB4TgMTM",
-  authDomain: "chat-app-gs-d4241.firebaseapp.com",
-  projectId: "chat-app-gs-d4241",
-  storageBucket: "chat-app-gs-d4241.appspot.com",
-  messagingSenderId: "647362367750",
-  appId: "1:647362367750:web:cb79f76802db3c245b4e87",
+  apiKey: secerts_apikey,
+  authDomain: secrets_authDomain,
+  projectId: secrets_projectId,
+  storageBucket: secerts_storageBucket,
+  messagingSenderId: secrets_messagingSenderId,
+  appId: secerts_appId,
 };
 
 // Initialize Firebase
